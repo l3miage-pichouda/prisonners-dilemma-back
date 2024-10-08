@@ -14,7 +14,7 @@ public class SondeurNaif implements Strategy {
     @Override
     public Decision execute() {
 
-        return Decision.values()[(int)(Math.random() * 3)];
+        return Decision.COOPERER;
     }
 
 
