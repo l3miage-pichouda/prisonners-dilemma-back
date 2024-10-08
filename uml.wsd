@@ -1,0 +1,31 @@
+@startuml
+class Player {
+    - String name
+    - List<Strategy> strategies
+    + Player(String name)
+    + void addStrategy(Strategy strategy)
+    + void play()
+    + String getName()
+}
+
+interface Strategy {
+    + void execute()
+}
+
+class FirstStrategy {
+    + void execute()
+}
+
+class SecondStrategy {
+    + void execute()
+}
+
+class StrategyFactory {
+    + static Strategy createStrategy(String type)
+}
+
+Player "1" -- "*" Strategy : uses >
+Strategy <|-- FirstStrategy
+Strategy <|-- SecondStrategy
+StrategyFactory ..> Strategy : creates >
+@enduml
