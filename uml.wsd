@@ -1,7 +1,7 @@
 @startuml
 class Player {
     - String name
-    - List<Strategy> strategies
+    - Strategy strategies
     + Player(String name)
     + void addStrategy(Strategy strategy)
     + void play()
