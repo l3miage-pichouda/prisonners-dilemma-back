@@ -1,4 +1,14 @@
 @startuml
+
+class Partie {
+    - Decision[] decisionsJoueur1;
+    - Decision[] decisionsJoueur2;
+    - Joueur player1
+    - Joueur player2
+    + Partie(Player player1, Player player2)
+    + void jouer()
+}
+
 class Player {
     - String name
     - Strategy strategies
