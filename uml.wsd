@@ -9,9 +9,18 @@ class Partie {
     + void jouer()
 }
 
-class Player {
+
+class Tour {
+    - Decision decisionJoueur1
+    - Decision decisionJoueur2
+    + Tour(Decision decisionJoueur1, Decision decisionJoueur2)
+    + void jouer()
+}
+
+class Joueur {
     - String name
-    - Strategy strategies
+    - Integer score
+    - Coup coup
     + Player(String name)
     + void addStrategy(Strategy strategy)
     + void play()
@@ -22,20 +31,19 @@ interface Strategy {
     + void execute()
 }
 
-class FirstStrategy {
+class StrategyEmp {
     + void execute()
 }
 
-class SecondStrategy {
-    + void execute()
-}
 
 class StrategyFactory {
     + static Strategy createStrategy(String type)
 }
 
-Player "1" -- "*" Strategy : uses >
-Strategy <|-- FirstStrategy
-Strategy <|-- SecondStrategy
-StrategyFactory ..> Strategy : creates >
+Partie "*" -- "2" Joueur : Joue <
+Tour "*" -- "2" Joueur : Joue <
+Partie "1" -- "1..10" Tour : contient >
+Joueur "*" -- "*" Strategy : utilise >
+Strategy <|.. StrategyEmp : implements >
+
 @enduml
