@@ -20,7 +20,6 @@ class Tour {
 class Joueur {
     - String name
     - Integer score
-    - Coup coup
     + Player(String name)
     + void addStrategy(Strategy strategy)
     + void play()
