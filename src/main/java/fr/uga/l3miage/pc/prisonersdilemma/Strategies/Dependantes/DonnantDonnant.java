@@ -1,8 +1,8 @@
 package fr.uga.l3miage.pc.prisonersdilemma.Strategies.Dependantes;
 
-import fr.uga.l3miage.pc.prisonersdilemma.Partie;
-import fr.uga.l3miage.pc.prisonersdilemma.Strategies.Decision;
-import fr.uga.l3miage.pc.prisonersdilemma.Strategies.Strategy;
+import fr.uga.l3miage.pc.prisonersdilemma.enums.Decision;
+import fr.uga.l3miage.pc.prisonersdilemma.interfaces.Strategy;
+import fr.uga.l3miage.pc.prisonersdilemma.modules.Partie;
 
 public class DonnantDonnant implements Strategy {
 
@@ -14,11 +14,11 @@ public class DonnantDonnant implements Strategy {
 
     @Override
     public Decision execute() {
-        if(Partie.tour == 0) {
+        if(Partie.decisionsJoueur1.size() == 0) {
             return Decision.COOPERER;
         }
         else {
-            return Partie.decisionsJoueur1[Partie.tour - 1];
+            return Partie.decisionsJoueur1.get(Partie.decisionsJoueur1.size() - 1);
         }
     }
 }

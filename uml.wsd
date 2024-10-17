@@ -10,14 +10,8 @@ class Partie {
 }
 
 
-class Tour {
-    - Decision decisionJoueur1
-    - Decision decisionJoueur2
-    + Tour(Decision decisionJoueur1, Decision decisionJoueur2)
-    + void jouer()
-}
-
 class Joueur {
+    - Strategy strategy
     - String name
     - Integer score
     + Player(String name)
@@ -40,8 +34,6 @@ class StrategyFactory {
 }
 
 Partie "*" -- "2" Joueur : Joue <
-Tour "*" -- "2" Joueur : Joue <
-Partie "1" -- "1..10" Tour : contient >
 Joueur "*" -- "*" Strategy : utilise >
 Strategy <|.. StrategyEmp : implements >
 

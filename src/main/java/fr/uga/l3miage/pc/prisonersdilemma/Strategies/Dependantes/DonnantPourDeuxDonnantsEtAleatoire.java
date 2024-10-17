@@ -1,8 +1,8 @@
 package fr.uga.l3miage.pc.prisonersdilemma.Strategies.Dependantes;
 
-import fr.uga.l3miage.pc.prisonersdilemma.Partie;
-import fr.uga.l3miage.pc.prisonersdilemma.Strategies.Decision;
-import fr.uga.l3miage.pc.prisonersdilemma.Strategies.Strategy;
+import fr.uga.l3miage.pc.prisonersdilemma.enums.Decision;
+import fr.uga.l3miage.pc.prisonersdilemma.interfaces.Strategy;
+import fr.uga.l3miage.pc.prisonersdilemma.modules.Partie;
 
 public class DonnantPourDeuxDonnantsEtAleatoire implements Strategy {
 
