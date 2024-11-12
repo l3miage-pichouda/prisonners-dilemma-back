@@ -1,37 +1,24 @@
 package fr.uga.l3miage.pc.prisonersdilemma.modules;
 
-import org.springframework.boot.autoconfigure.web.WebProperties.Resources.Chain.Strategy;
-
-
+import fr.uga.l3miage.pc.prisonersdilemma.enums.Decision;
+import fr.uga.l3miage.pc.prisonersdilemma.interfaces.Strategy;
+import lombok.Getter;
+import lombok.Setter;
+@Getter
+@Setter
 public class Joueur {
     
-    Strategy strategy;
+    private Strategy strategy = null;
+    private Decision decision = null;
+    private String name = null;
+    private Integer score = 0;
+    private boolean connected;  
 
-    String name;
-
-    Integer score;
-
-    public Joueur(Strategy strategy, String name, Integer score) {
-        this.strategy = strategy;
-        this.name = name;
-        this.score = score;
+    public Joueur(){
+        this.connected = false;
     }
 
-    public void addStrategy(Strategy strategy) {
-        this.strategy = strategy;
+    public void ajouterScore(Integer score) {
+        this.score += score;
     }
-
-    public void addScore(Integer score) {
-        this.score = score;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Integer getScore() {
-        return score;
-    }
-
-
 }
