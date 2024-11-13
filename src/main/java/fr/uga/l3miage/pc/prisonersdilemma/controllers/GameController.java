@@ -40,6 +40,17 @@ public class GameController {
         Integer nbTours = request.getNbTours(); 
         System.out.println("Pseudo: " + pseudo);
         System.out.println("NbTours: " + nbTours);
+
+        try {
+            if (!partiesService.isGameStarted()) {
+              
+                partiesService.demarrerPartie(nbTours); 
+            }
+
+            partiesService.addPlayer(pseudo);
+        } catch (MaximumPlayersReachedException e) {
+            return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
+        }
         // try {
         //     if (!partiesService.isGameStarted()) {
         //         if (nbTours == null) {
