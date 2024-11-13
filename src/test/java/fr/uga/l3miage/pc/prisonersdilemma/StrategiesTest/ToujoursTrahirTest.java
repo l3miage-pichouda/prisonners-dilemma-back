@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import fr.uga.l3miage.pc.prisonersdilemma.enums.Decision;
-import fr.uga.l3miage.pc.prisonersdilemma.Strategies.ToujoursTrahir;
+import fr.uga.l3miage.pc.prisonersdilemma.strategies.ToujoursTrahir;
 
 class ToujoursTrahirTest {
     @Test

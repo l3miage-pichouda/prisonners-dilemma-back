@@ -2,7 +2,7 @@ package fr.uga.l3miage.pc.prisonersdilemma.StrategiesTest;
 
 import org.junit.jupiter.api.Test;
 
-import fr.uga.l3miage.pc.prisonersdilemma.Strategies.StrategyFactory;
+import fr.uga.l3miage.pc.prisonersdilemma.strategies.StrategyFactory;
 
 public class StrategyFactoryTest {
 

@@ -1,4 +1,4 @@
-package fr.uga.l3miage.pc.prisonersdilemma.Strategies;
+package fr.uga.l3miage.pc.prisonersdilemma.strategies;
 import java.util.ArrayList;
 import fr.uga.l3miage.pc.prisonersdilemma.enums.Decision;
 import fr.uga.l3miage.pc.prisonersdilemma.interfaces.Strategy;

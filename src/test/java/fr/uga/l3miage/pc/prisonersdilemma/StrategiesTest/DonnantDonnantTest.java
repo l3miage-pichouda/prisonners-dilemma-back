@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
 import fr.uga.l3miage.pc.prisonersdilemma.enums.Decision;
-import fr.uga.l3miage.pc.prisonersdilemma.Strategies.DonnantDonnant;
+import fr.uga.l3miage.pc.prisonersdilemma.strategies.DonnantDonnant;
 
 class DonnantDonnantTest {
     private DonnantDonnant donnantDonnant;

@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import fr.uga.l3miage.pc.prisonersdilemma.enums.Decision;
-import fr.uga.l3miage.pc.prisonersdilemma.Strategies.RancunierDoux;
+import fr.uga.l3miage.pc.prisonersdilemma.strategies.RancunierDoux;
 
 class RancunierDouxTest {
     private RancunierDoux rancunierDoux;

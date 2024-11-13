@@ -1,4 +1,4 @@
-package fr.uga.l3miage.pc.prisonersdilemma.Strategies;
+package fr.uga.l3miage.pc.prisonersdilemma.strategies;
 import fr.uga.l3miage.pc.prisonersdilemma.enums.TypeStrategy;
 import fr.uga.l3miage.pc.prisonersdilemma.interfaces.Strategy;
 
