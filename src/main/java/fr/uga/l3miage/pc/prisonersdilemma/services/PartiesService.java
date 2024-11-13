@@ -17,10 +17,15 @@ public class PartiesService {
         this.partie = new Partie(nbTours);
     }
 
+    public boolean isGameStarted() {
+        return partie != null;
+    }
+
     public void addPlayer(String pseudo) throws MaximumPlayersReachedException {
         if (partie == null) {
             throw new IllegalStateException("La partie n'a pas été initialisée. Veuillez démarrer une nouvelle partie.");
         }
+
         
         if (partie.getNbJoueurs() < 2) {
             Joueur joueur = new Joueur();
@@ -63,4 +68,8 @@ public class PartiesService {
             throw new IllegalStateException("Les décisions des deux joueurs ne sont pas encore prêtes ou la partie est terminée.");
         }
     }
+    public int getNumberOfPlayers() {
+        return partie.getNbJoueurs(); 
+    }
+    
 }
