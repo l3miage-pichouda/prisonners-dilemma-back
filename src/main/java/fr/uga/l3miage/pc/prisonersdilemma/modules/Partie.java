@@ -7,7 +7,7 @@ import java.util.Map;
 
 import fr.uga.l3miage.pc.prisonersdilemma.enums.Decision;
 import fr.uga.l3miage.pc.prisonersdilemma.enums.TypeStrategy;
-import fr.uga.l3miage.pc.prisonersdilemma.strategies.StrategyFactory;
+import fr.uga.l3miage.pc.prisonersdilemma.Strategies.StrategyFactory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

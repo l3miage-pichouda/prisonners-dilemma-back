@@ -8,6 +8,23 @@ import lombok.Setter;
 @Setter
 public class PseudoRequest {
     private String pseudo; 
-    private boolean isConnected;
-    private TypeStrategy strategy;
+    private Integer nbTours;
+    
+    public String getPseudo() {
+        return pseudo;
+    }
+
+    public void setPseudo(String pseudo) {
+        this.pseudo = pseudo;
+    }
+
+    public Integer getNbTours() {
+        return nbTours;
+    }
+
+    public void setNbTours(Integer nbTours) {
+        this.nbTours = nbTours;
+    }
+
+    
 }

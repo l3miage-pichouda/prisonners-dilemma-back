@@ -1,5 +1,6 @@
 package fr.uga.l3miage.pc.prisonersdilemma.controllers;
 
+import java.io.Console;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,15 +36,31 @@ public class GameController {
 
     @PostMapping("/join-game")
     public ResponseEntity<Map<String, String>> joinGame(@RequestBody PseudoRequest request) {
-        try {
-            partiesService.addPlayer(request.getPseudo(), request.isConnected(), request.getStrategy());
-        } catch (MaximumPlayersReachedException | IllegalStateException e) {
-            return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
-        }
+        String pseudo = request.getPseudo();
+        Integer nbTours = request.getNbTours(); 
+        System.out.println("Pseudo: " + pseudo);
+        System.out.println("NbTours: " + nbTours);
+        // try {
+        //     if (!partiesService.isGameStarted()) {
+        //         if (nbTours == null) {
+        //             return ResponseEntity.badRequest().body(Map.of("message", "Le nombre de tours doit être spécifié par le premier joueur."));
+        //         }
+        //         partiesService.demarrerPartie(nbTours); 
+        //     }
+
+        //     partiesService.addPlayer(pseudo); 
+        // } catch (MaximumPlayersReachedException e) {
+        //     return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
+        // } catch (IllegalStateException e) {
+        //     return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
+        // }
+
         Map<String, String> response = new HashMap<>();
         response.put("message", request.getPseudo() + " a rejoint la partie");
         return ResponseEntity.ok(response);
     }
+
+    
 
     @PostMapping("/abandon")
     public ResponseEntity<Map<String, String>> abandon(@RequestBody PseudoRequest request, @RequestParam String typeStrategy) {
@@ -86,4 +103,18 @@ public class GameController {
             return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
         }
     }
+
+    @GetMapping("/player-count")
+    public ResponseEntity<Map<String, Integer>> getPlayerCount() {
+        try {
+            int playerCount = partiesService.getNumberOfPlayers();
+            Map<String, Integer> response = new HashMap<>();
+            response.put("playerCount", playerCount);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("playerCount", -1));
+        }
+    }
+ 
+
 }

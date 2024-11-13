@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import fr.uga.l3miage.pc.prisonersdilemma.enums.Decision;
-import fr.uga.l3miage.pc.prisonersdilemma.strategies.ToujoursCooperer;
+import fr.uga.l3miage.pc.prisonersdilemma.Strategies.ToujoursCooperer;
 
 class ToujoursCoopererTest {
     @Test
