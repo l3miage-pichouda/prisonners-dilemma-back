@@ -23,26 +23,25 @@ public class GameController {
     @PostMapping("/start-game")
     public ResponseEntity<Map<String, String>> startGame(@RequestBody StartGameRequest request) {
         try {
-            partiesService.demarrerPartie(request.getNbTours());
+            partiesService.demarrerPartie(request.getNbTours(), request.getPseudo());
             
             Map<String, String> response = new HashMap<>();
-            response.put("message", "La partie a Ã©tÃ© dÃ©marrÃ©e avec succÃ¨s avec " + request.getNbTours() + " tours.");
+            response.put("message", "La partie a ete demarrée avec succès avec " + request.getNbTours() + " tours.");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(Map.of("message", "Erreur lors du dÃ©marrage de la partie : " + e.getMessage()));
+            return ResponseEntity.badRequest().body(Map.of("message", "Erreur lors du démarrage de la partie : " + e.getMessage()));
         }
     }
 
     @PostMapping("/join-game")
     public ResponseEntity<Map<String, String>> joinGame(@RequestBody PseudoRequest request) {
-        String pseudo = request.getPseudo();
         try {
-            partiesService.addPlayer(pseudo);
-        } catch (MaximumPlayersReachedException e) {
+            partiesService.addPlayer(request.getPseudo(), request.isConnected(), request.getStrategy());
+        } catch (MaximumPlayersReachedException | IllegalStateException e) {
             return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
         }
         Map<String, String> response = new HashMap<>();
-        response.put("message", pseudo + " a rejoint la partie");
+        response.put("message", request.getPseudo() + " a rejoint la partie");
         return ResponseEntity.ok(response);
     }
 
@@ -59,20 +58,19 @@ public class GameController {
         return ResponseEntity.ok(response);
     }
 
+
     @PostMapping("/play")
     public ResponseEntity<Map<String, String>> play(@RequestBody PseudoRequest request, @RequestParam String decision) throws GameNotInitializedException {
         String pseudo = request.getPseudo();
         Map<String, String> response = new HashMap<>();
 
         try {
-            // Soumet la décision du joueur
             boolean success = partiesService.soumettreDecision(pseudo, Decision.valueOf(decision));
 
             if (!success) {
                 return ResponseEntity.badRequest().body(Map.of("message", "Erreur lors de la soumission de la décision pour " + pseudo));
             }
 
-            // Vérifie si les deux décisions sont prêtes pour jouer un tour
             if (partiesService.peutJouerTour()) {
                 partiesService.jouerTour();
                 response.put("message", "Tour joué avec succès.");

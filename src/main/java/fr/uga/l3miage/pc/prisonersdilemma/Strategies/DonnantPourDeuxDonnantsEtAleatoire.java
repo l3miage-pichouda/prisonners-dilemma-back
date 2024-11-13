@@ -11,5 +11,4 @@ public class DonnantPourDeuxDonnantsEtAleatoire implements Strategy {
     public Decision execute(ArrayList<Decision> historiqueJoueur1, ArrayList<Decision> historiqueJoueur2) {
         return Decision.COOPERER;
     }
-
 }

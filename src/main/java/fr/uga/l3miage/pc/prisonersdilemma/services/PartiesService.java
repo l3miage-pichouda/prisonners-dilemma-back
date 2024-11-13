@@ -1,7 +1,6 @@
 package fr.uga.l3miage.pc.prisonersdilemma.services;
 
 import org.springframework.stereotype.Service;
-
 import fr.uga.l3miage.pc.prisonersdilemma.enums.Decision;
 import fr.uga.l3miage.pc.prisonersdilemma.enums.TypeStrategy;
 import fr.uga.l3miage.pc.prisonersdilemma.exceptions.GameNotInitializedException;
@@ -13,19 +12,21 @@ import fr.uga.l3miage.pc.prisonersdilemma.modules.Partie;
 public class PartiesService {
     private Partie partie;
 
-    public void demarrerPartie(int nbTours) {
+    public void demarrerPartie(int nbTours, String pseudo) {
+        if(partie != null){
+            throw new IllegalStateException("La partie est déjà initialisée.");
+        }
         this.partie = new Partie(nbTours);
+        partie.addJoueur(pseudo, true, null);
     }
 
-    public void addPlayer(String pseudo) throws MaximumPlayersReachedException {
+    public void addPlayer(String pseudo, boolean isConnected, TypeStrategy strategy) throws MaximumPlayersReachedException {
         if (partie == null) {
             throw new IllegalStateException("La partie n'a pas été initialisée. Veuillez démarrer une nouvelle partie.");
         }
         
         if (partie.getNbJoueurs() < 2) {
-            Joueur joueur = new Joueur();
-            joueur.setName(pseudo);
-            partie.addJoueur(joueur);
+            partie.addJoueur(pseudo, isConnected, strategy);
         } else {
             throw new MaximumPlayersReachedException();
         }

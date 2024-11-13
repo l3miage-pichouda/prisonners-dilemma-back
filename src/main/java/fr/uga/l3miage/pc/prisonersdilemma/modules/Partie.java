@@ -16,9 +16,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class Partie {
-    private final Map<String, List<Decision>> historiqueDecisionsMap = new HashMap<>();
-    private Decision decisionJoueur1;
-    private Decision decisionJoueur2;
+    private final Map<String, ArrayList<Decision>> historiqueDecisionsMap = new HashMap<>();
     private StrategyFactory strategyFactory;
     private int nbTours;
     private int tourActuel = 0;
@@ -30,32 +28,53 @@ public class Partie {
         this.nbTours = nbTours;
     }
 
-    public void addJoueur(Joueur joueur){
+    public void addJoueur(String pseudo, boolean isConnected, TypeStrategy strategy) throws IllegalStateException {
+        Joueur joueur = new Joueur();
+        if (isConnected) {
+            if (pseudo == null || pseudo.isEmpty()) {
+                throw new IllegalStateException("Le nom du joueur ne peut pas être vide.");
+            } else if (joueurs.stream().anyMatch(j -> j.getName().equals(pseudo))) {
+                throw new IllegalStateException("Le nom du joueur est déjà utilisé.");
+            }
+            joueur.setName(pseudo);
+        } else {
+            joueur.setName("Blip-Boup-Bap");
+            joueur.setConnected(false);
+            joueur.setStrategy(strategyFactory.create(strategy));
+        }
         joueurs.add(joueur);
         historiqueDecisionsMap.put(joueur.getName(), new ArrayList<>());
     }
 
-    public int getNbJoueurs(){
+    public int getNbJoueurs() {
         return joueurs.size();
-        }
+    }
 
-
-    public void abandonner(Joueur joueur, TypeStrategy typeStrategy){
+    public void abandonner(Joueur joueur, TypeStrategy typeStrategy) {
         joueur.setConnected(false);
         joueur.setStrategy(strategyFactory.create(typeStrategy));
     }
+
     public boolean soumettreDecision(String pseudo, Decision decision) {
-        if (joueurs.get(0).getName().equals(pseudo)) {
-            if (decisionJoueur1 == null) {
-                decisionJoueur1 = decision;
+        Joueur joueur1 = joueurs.get(0);
+        Joueur joueur2 = joueurs.size() > 1 ? joueurs.get(1) : null;
+        if (joueur1.getName().equals(pseudo)) {
+            if (joueur1.getDecision() == null) {
+                joueur1.setDecision(decision);
                 return true;
             }
-        } else if (joueurs.size() > 1 && joueurs.get(1).getName().equals(pseudo) && decisionJoueur2 == null) {
-            decisionJoueur2 = decision;
+        } else if (joueur2!=null && decisionJoueur2 == null) {
+            if(joueur2.getName().equals(pseudo)){
+                joueur2.setDecision(decision);
+                return true;
+            }
+            else if(!joueur2.isConnected()){
+                joueur2.setDecision(joueur2.getStrategy().execute(null, null));            }
             return true;
         }
         return false;
     }
+
     public boolean peutJouerTour() {
         return (decisionJoueur1 != null && decisionJoueur2 != null) && tourActuel <= nbTours;
     }
@@ -65,22 +84,19 @@ public class Partie {
             throw new IllegalStateException("Les décisions des deux joueurs ne sont pas encore prêtes.");
         }
 
-        // Enregistre les décisions du tour actuel dans l'historique
         historiqueDecisionsMap.get(joueurs.get(0).getName()).add(decisionJoueur1);
         historiqueDecisionsMap.get(joueurs.get(1).getName()).add(decisionJoueur2);
 
-        // Logique pour mettre à jour les scores des joueurs en fonction des décisions
         mettreAJourScores();
 
-        // Prépare pour le tour suivant
         decisionJoueur1 = null;
         decisionJoueur2 = null;
         tourActuel++;
     }
 
     private void mettreAJourScores() {
-        // Logique pour appliquer les décisions et ajuster les scores des joueurs
-        // Exemple : ajouter un score basé sur la combinaison des décisions (coopération/trahison)
+        Decision decisionJoueur1 = joueurs.get(0).getDecision();
+        Decision decisionJoueur2 = joueurs.get(1).getDecision();
         if (decisionJoueur1 == Decision.COOPERER && decisionJoueur2 == Decision.COOPERER) {
             joueurs.get(0).ajouterScore(3);
             joueurs.get(1).ajouterScore(3);
