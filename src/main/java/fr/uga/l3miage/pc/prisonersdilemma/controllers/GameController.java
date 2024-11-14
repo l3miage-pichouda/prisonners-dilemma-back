@@ -5,12 +5,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import fr.uga.l3miage.pc.prisonersdilemma.enums.Decision;
 import fr.uga.l3miage.pc.prisonersdilemma.enums.TypeStrategy;
 import fr.uga.l3miage.pc.prisonersdilemma.exceptions.GameNotInitializedException;
 import fr.uga.l3miage.pc.prisonersdilemma.exceptions.MaximumPlayersReachedException;
+import fr.uga.l3miage.pc.prisonersdilemma.requests.DecisionRequest;
 import fr.uga.l3miage.pc.prisonersdilemma.requests.PseudoRequest;
 import fr.uga.l3miage.pc.prisonersdilemma.requests.StartGameRequest;
 import fr.uga.l3miage.pc.prisonersdilemma.services.PartiesService;
@@ -24,7 +26,7 @@ public class GameController {
     @PostMapping("/start-game")
     public ResponseEntity<Map<String, String>> startGame(@RequestBody StartGameRequest request) {
         try {
-            partiesService.demarrerPartie(request.getNbTours(), request.getPseudo());
+            partiesService.demarrerPartie(request.getNbTours());
             
             Map<String, String> response = new HashMap<>();
             response.put("message", "La partie a ete demarrée avec succès avec " + request.getNbTours() + " tours.");
@@ -38,16 +40,17 @@ public class GameController {
     public ResponseEntity<Map<String, String>> joinGame(@RequestBody PseudoRequest request) {
         String pseudo = request.getPseudo();
         Integer nbTours = request.getNbTours(); 
+        boolean isConnected = request.isConnected();
         System.out.println("Pseudo: " + pseudo);
         System.out.println("NbTours: " + nbTours);
-
+        System.out.println("Strategie: " + request.getStrategy());
         try {
             if (!partiesService.isGameStarted()) {
               
                 partiesService.demarrerPartie(nbTours); 
             }
 
-            partiesService.addPlayer(pseudo);
+            partiesService.addPlayer(pseudo, isConnected, request.getStrategy());
         } catch (MaximumPlayersReachedException e) {
             return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
         }
@@ -115,10 +118,12 @@ public class GameController {
  
 
     @PostMapping("/soumettre-decision")
-    public ResponseEntity<String> soumettreDecision(@RequestParam String pseudo, @RequestParam Decision decision) {
+    public ResponseEntity<String> soumettreDecision(@RequestBody DecisionRequest request) {
         try {
-            boolean success = partiesService.soumettreDecision(pseudo, decision);
+
+            boolean success = partiesService.soumettreDecision(request.getPseudo(), Decision.valueOf(request.getDecision()));
             if (success) {
+                System.out.println("Décision soumise, pseudo: " + request.getPseudo() + ", decision: " + request.getDecision());
                 return ResponseEntity.ok("Décision soumise avec succès.");
             } else {
                 return ResponseEntity.badRequest().body("Décision déjà soumise ou joueur non trouvé.");
@@ -127,5 +132,17 @@ public class GameController {
             return ResponseEntity.badRequest().body("La partie n'est pas initialisée.");
         }
     }
+
+    @GetMapping("/get-decision")
+    public ResponseEntity<Boolean> getDecision(@RequestParam String pseudo) {
+        try {
+            Boolean otherPlayerDecision = partiesService.getDecisionOfOtherPlayer(pseudo);
+            System.out.println("GameController.getDecision()");
+            return ResponseEntity.ok(otherPlayerDecision);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    } 
+
 
 }

@@ -1,6 +1,8 @@
 package fr.uga.l3miage.pc.prisonersdilemma.services;
 
+import org.springframework.boot.autoconfigure.web.WebProperties.Resources.Chain.Strategy;
 import org.springframework.stereotype.Service;
+
 import fr.uga.l3miage.pc.prisonersdilemma.enums.Decision;
 import fr.uga.l3miage.pc.prisonersdilemma.enums.TypeStrategy;
 import fr.uga.l3miage.pc.prisonersdilemma.exceptions.GameNotInitializedException;
@@ -12,10 +14,7 @@ import fr.uga.l3miage.pc.prisonersdilemma.modules.Partie;
 public class PartiesService {
     private Partie partie;
 
-    public void demarrerPartie(int nbTours, String pseudo) {
-        if(partie != null){
-            throw new IllegalStateException("La partie est déjà initialisée.");
-        }
+    public void demarrerPartie(int nbTours) {
         this.partie = new Partie(nbTours);
     }
 
@@ -23,14 +22,14 @@ public class PartiesService {
         return partie != null;
     }
 
-    public void addPlayer(String pseudo, boolean isConnected, TypeStrategy strategy) throws MaximumPlayersReachedException {
+    public void addPlayer(String pseudo, boolean isConnected, String strategy) throws MaximumPlayersReachedException {
         if (partie == null) {
             throw new IllegalStateException("La partie n'a pas été initialisée. Veuillez démarrer une nouvelle partie.");
         }
 
         
         if (partie.getNbJoueurs() < 2) {
-            partie.addJoueur(pseudo, isConnected, strategy);
+            partie.addJoueur(pseudo, isConnected, TypeStrategy.valueOf(strategy));
         } else {
             throw new MaximumPlayersReachedException();
         }
@@ -50,7 +49,7 @@ public class PartiesService {
         }
         return partie.soumettreDecision(pseudo, decision);
     }
-
+    
     public boolean peutJouerTour() throws GameNotInitializedException {
         if (partie == null) {
             throw new GameNotInitializedException();
@@ -70,6 +69,10 @@ public class PartiesService {
     }
     public int getNumberOfPlayers() {
         return partie.getNbJoueurs(); 
+    }
+
+    public boolean getDecisionOfOtherPlayer(String pseudo) {
+        return partie.getDecisionOfOtherPlayer(pseudo);
     }
     
 }
