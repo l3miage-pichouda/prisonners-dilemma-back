@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import fr.uga.l3miage.pc.prisonersdilemma.enums.Decision;
 import fr.uga.l3miage.pc.prisonersdilemma.strategies.PacificateurNaif;
 
-public class PacificateurNaifTest {
+class PacificateurNaifTest {
     private PacificateurNaif strategy;
     private ArrayList<Decision> historiqueJoueur1;
     private ArrayList<Decision> historiqueJoueur2;
@@ -39,7 +39,7 @@ public class PacificateurNaifTest {
     }
 
     @Test
-    public void testPacificationOccurs() {
+    void testPacificationOccurs() {
         int cooperateCount = 0;
         int iterations = 1000;
         PacificateurNaif randomStrat = new PacificateurNaif();

@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import fr.uga.l3miage.pc.prisonersdilemma.enums.Decision;
 import fr.uga.l3miage.pc.prisonersdilemma.strategies.Rancunier;
 
-public class RancunierTest {
+class RancunierTest {
     private Rancunier rancunier;
     private ArrayList<Decision> historiqueJoueur1;
     private ArrayList<Decision> historiqueJoueur2;

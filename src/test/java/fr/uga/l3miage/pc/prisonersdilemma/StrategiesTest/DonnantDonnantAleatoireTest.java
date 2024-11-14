@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import fr.uga.l3miage.pc.prisonersdilemma.enums.Decision;
 import fr.uga.l3miage.pc.prisonersdilemma.strategies.DonnantDonnantAleatoire;
 
-public class DonnantDonnantAleatoireTest {
+class DonnantDonnantAleatoireTest {
     private DonnantDonnantAleatoire strategy;
     private ArrayList<Decision> historiqueJoueur1;
     private ArrayList<Decision> historiqueJoueur2;
@@ -25,20 +25,20 @@ public class DonnantDonnantAleatoireTest {
     }
 
     @Test
-    public void testCooperateWhenEmptyHistory() {
+    void testCooperateWhenEmptyHistory() {
         Decision decision = strategy.execute(historiqueJoueur1, historiqueJoueur2);
         assertEquals(Decision.COOPERER, decision, "Devrait coopérer lorsque l'historique est vide");
     }
 
     @Test
-    public void testImitateLastDecisionWhenNoRandomDecision() {
+    void testImitateLastDecisionWhenNoRandomDecision() {
         historiqueJoueur2.add(Decision.TRAHIR);
         Decision decision = strategy.execute(historiqueJoueur1, historiqueJoueur2);
         assertEquals(Decision.TRAHIR, decision, "Devrait imiter la dernière décision de l'adversaire");
     }
 
     @Test
-    public void testRandomDecisionOccurs() {
+    void testRandomDecisionOccurs() {
         DonnantDonnantAleatoire randomStrat = new DonnantDonnantAleatoire();
         int cooperateCount = 0;
         int iterations = 1000; 
