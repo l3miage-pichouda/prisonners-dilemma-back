@@ -51,20 +51,6 @@ public class GameController {
         } catch (MaximumPlayersReachedException e) {
             return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
         }
-        // try {
-        //     if (!partiesService.isGameStarted()) {
-        //         if (nbTours == null) {
-        //             return ResponseEntity.badRequest().body(Map.of("message", "Le nombre de tours doit être spécifié par le premier joueur."));
-        //         }
-        //         partiesService.demarrerPartie(nbTours); 
-        //     }
-
-        //     partiesService.addPlayer(pseudo); 
-        // } catch (MaximumPlayersReachedException e) {
-        //     return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
-        // } catch (IllegalStateException e) {
-        //     return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
-        // }
 
         Map<String, String> response = new HashMap<>();
         response.put("message", pseudo + " a rejoint la partie");
@@ -128,5 +114,19 @@ public class GameController {
         }
     }
  
+
+    @PostMapping("/soumettre-decision")
+    public ResponseEntity<String> soumettreDecision(@RequestParam String pseudo, @RequestParam Decision decision) {
+        try {
+            boolean success = partiesService.soumettreDecision(pseudo, decision);
+            if (success) {
+                return ResponseEntity.ok("Décision soumise avec succès.");
+            } else {
+                return ResponseEntity.badRequest().body("Décision déjà soumise ou joueur non trouvé.");
+            }
+        } catch (GameNotInitializedException e) {
+            return ResponseEntity.badRequest().body("La partie n'est pas initialisée.");
+        }
+    }
 
 }
