@@ -55,42 +55,48 @@ public class Partie {
         joueur.setStrategy(strategyFactory.create(typeStrategy));
     }
 
+    @SuppressWarnings("null")
     public boolean soumettreDecision(String pseudo, Decision decision) {
         Joueur joueur1 = joueurs.get(0);
         Joueur joueur2 = joueurs.size() > 1 ? joueurs.get(1) : null;
         if (joueur1.getName().equals(pseudo)) {
             if (joueur1.getDecision() == null) {
                 joueur1.setDecision(decision);
+                System.out.println("Décision de jouer2 : " + joueur2.getDecision());
                 return true;
             }
-        } else if (joueur2!=null && decisionJoueur2 == null) {
+        } else if (joueur2!=null && joueur2.getDecision() == null) {
             if(joueur2.getName().equals(pseudo)){
                 joueur2.setDecision(decision);
                 return true;
             }
             else if(!joueur2.isConnected()){
-                joueur2.setDecision(joueur2.getStrategy().execute(null, null));            }
+                joueur2.setDecision(joueur2.getStrategy().execute(null, null));          
+              }
             return true;
         }
         return false;
     }
 
     public boolean peutJouerTour() {
-        return (decisionJoueur1 != null && decisionJoueur2 != null) && tourActuel <= nbTours;
+        return (joueurs.get(0).getDecision() != null && joueurs.get(1).getDecision() != null) && tourActuel <= nbTours;
+        
     }
 
     public void jouerTour() {
+        Joueur joueur1 = joueurs.get(0);
+        Joueur joueur2 = joueurs.size() > 1 ? joueurs.get(1) : null;
         if (!peutJouerTour()) {
             throw new IllegalStateException("Les décisions des deux joueurs ne sont pas encore prêtes.");
         }
 
-        historiqueDecisionsMap.get(joueurs.get(0).getName()).add(decisionJoueur1);
-        historiqueDecisionsMap.get(joueurs.get(1).getName()).add(decisionJoueur2);
+        historiqueDecisionsMap.get(joueurs.get(0).getName()).add(joueur1.getDecision());
+        historiqueDecisionsMap.get(joueurs.get(1).getName()).add(joueur1.getDecision());
 
         mettreAJourScores();
 
-        decisionJoueur1 = null;
-        decisionJoueur2 = null;
+        joueur1.setDecision(null); 
+        joueur2.setDecision(null);
         tourActuel++;
     }
 
@@ -111,5 +117,40 @@ public class Partie {
             joueurs.get(1).ajouterScore(0);
         }
     }
+
+    public boolean getDecisionOfOtherPlayer(String pseudo) {
+        System.out.println("Getting decision of other player for pseudo: " + pseudo);
+        for (Joueur j : joueurs) {
+            System.out.println("Player in list: " + j.getName() + ", Decision: " + j.getDecision());
+        }
+    
+        Joueur requestingPlayer = joueurs.stream()
+                .filter(j -> j.getName().equals(pseudo))
+                .findFirst()
+                .orElse(null);
+    
+        if (requestingPlayer == null) {
+            System.out.println("Requesting player not found.");
+            return false;
+        }
+    
+        Joueur otherPlayer = joueurs.stream()
+                .filter(j -> !j.getName().equals(pseudo))
+                .findFirst()
+                .orElse(null);
+    
+        if (otherPlayer != null) {
+            System.out.println("Other player found: " + otherPlayer.getName());
+            if (otherPlayer.getDecision() != null) {
+                return true;
+            } else {
+                System.out.println("Other player's decision is null.");
+            }
+        } else {
+            System.out.println("No other player found.");
+        }
+        return false;
+    }
+    
 
 }

@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import fr.uga.l3miage.pc.prisonersdilemma.enums.Decision;
 import fr.uga.l3miage.pc.prisonersdilemma.strategies.SondeurNaif;
 
-public class SondeurNaifTest {
+class SondeurNaifTest {
     private SondeurNaif strategy;
     private ArrayList<Decision> historiqueJoueur1;
     private ArrayList<Decision> historiqueJoueur2;

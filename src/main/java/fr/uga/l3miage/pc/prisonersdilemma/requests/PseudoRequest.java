@@ -9,22 +9,9 @@ import lombok.Setter;
 public class PseudoRequest {
     private String pseudo; 
     private Integer nbTours;
+    private String strategy;
+    private boolean connected;
     
-    public String getPseudo() {
-        return pseudo;
-    }
-
-    public void setPseudo(String pseudo) {
-        this.pseudo = pseudo;
-    }
-
-    public Integer getNbTours() {
-        return nbTours;
-    }
-
-    public void setNbTours(Integer nbTours) {
-        this.nbTours = nbTours;
-    }
 
     
 }
