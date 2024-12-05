@@ -59,24 +59,61 @@ public class Partie {
     public boolean soumettreDecision(String pseudo, Decision decision) {
         Joueur joueur1 = joueurs.get(0);
         Joueur joueur2 = joueurs.size() > 1 ? joueurs.get(1) : null;
+
         if (joueur1.getName().equals(pseudo)) {
             if (joueur1.getDecision() == null) {
                 joueur1.setDecision(decision);
-                System.out.println("Décision de jouer2 : " + joueur2.getDecision());
-                return true;
+                historiqueDecisionsMap.get(joueur1.getName()).add(decision);
+                System.out.println("Décision de " + joueur1.getName() + ": " + decision);
             }
-        } else if (joueur2!=null && joueur2.getDecision() == null) {
-            if(joueur2.getName().equals(pseudo)){
+        } 
+        else if (joueur2 != null && joueur2.getDecision() == null) {
+            if (joueur2.getName().equals(pseudo)) {
                 joueur2.setDecision(decision);
-                return true;
+                historiqueDecisionsMap.get(joueur2.getName()).add(decision);
+                System.out.println("Décision de " + joueur2.getName() + ": " + decision);
             }
-            else if(!joueur2.isConnected()){
-                joueur2.setDecision(joueur2.getStrategy().execute(null, null));          
-              }
-            return true;
+            else if (!joueur2.isConnected()) {
+                joueur2.setDecision(joueur2.getStrategy().execute(null, null));
+                System.out.println("Décision automatique pour joueur déconnecté: " + joueur2.getDecision());
+            }
+        } else {
+            return false;
         }
-        return false;
+
+        if (joueur1.getDecision() != null && (joueur2 != null && joueur2.getDecision() != null)) {
+            processRound(joueur1, joueur2);
+        }
+
+        return true;
     }
+
+    private void processRound(Joueur joueur1, Joueur joueur2) {
+        Decision decision1 = joueur1.getDecision();
+        Decision decision2 = joueur2.getDecision();
+    
+        if (decision1 == Decision.COOPERER && decision2 == Decision.COOPERER) {
+            joueur1.ajouterScore(3);
+            joueur2.ajouterScore(3);
+        } else if (decision1 == Decision.COOPERER && decision2 == Decision.TRAHIR) {
+            joueur1.ajouterScore(0);
+            joueur2.ajouterScore(5);
+        } else if (decision1 == Decision.TRAHIR && decision2 == Decision.COOPERER) {
+            joueur1.ajouterScore(5);
+            joueur2.ajouterScore(0);
+        } else if (decision1 == Decision.TRAHIR && decision2 == Decision.TRAHIR) {
+            joueur1.ajouterScore(1);
+            joueur2.ajouterScore(1);
+        }
+    
+        System.out.println("Tour terminé. Scores mis à jour:");
+        System.out.println(joueur1.getName() + " score: " + joueur1.getScore());
+        System.out.println(joueur2.getName() + " score: " + joueur2.getScore());
+    
+        resetDecisions();
+    }
+    
+
 
     public boolean peutJouerTour() {
         return (joueurs.get(0).getDecision() != null && joueurs.get(1).getDecision() != null) && tourActuel <= nbTours;
@@ -152,5 +189,15 @@ public class Partie {
         return false;
     }
     
+
+    public List<Decision> getHistorique(String pseudo) {
+        return historiqueDecisionsMap.getOrDefault(pseudo, new ArrayList<>());
+    }
+
+    public void resetDecisions() {
+        for (Joueur j : joueurs) {
+            j.setDecision(null);
+        }
+    }
 
 }

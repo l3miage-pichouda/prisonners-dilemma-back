@@ -11,7 +11,7 @@ public class Joueur {
     private Strategy strategy = null;
     private Decision decision = null;
     private String name = null;
-    private Integer score = 0;
+    private Integer score = 0; 
     private boolean connected;  
 
     public Joueur(){
