@@ -2,6 +2,7 @@ package fr.uga.l3miage.pc.prisonersdilemma.controllers;
 
 import java.io.Console;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import fr.uga.l3miage.pc.prisonersdilemma.requests.DecisionRequest;
 import fr.uga.l3miage.pc.prisonersdilemma.requests.PseudoRequest;
 import fr.uga.l3miage.pc.prisonersdilemma.requests.StartGameRequest;
 import fr.uga.l3miage.pc.prisonersdilemma.services.PartiesService;
+
 
 @RestController
 @RequestMapping("/api") 
@@ -144,5 +146,16 @@ public class GameController {
         }
     } 
 
+    @GetMapping("/get-historique")
+    public ResponseEntity<List<Decision>> getHistorique(@RequestParam String pseudo) {
+        try {
+            List<Decision> historique = partiesService.getHistorique(pseudo);
+            return ResponseEntity.ok(historique);
+        } catch (GameNotInitializedException e) {
+            return ResponseEntity.badRequest().body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }   
 
 }

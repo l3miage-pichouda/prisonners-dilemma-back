@@ -1,5 +1,7 @@
 package fr.uga.l3miage.pc.prisonersdilemma.services;
 
+import java.util.List;
+
 import org.springframework.boot.autoconfigure.web.WebProperties.Resources.Chain.Strategy;
 import org.springframework.stereotype.Service;
 
@@ -73,6 +75,15 @@ public class PartiesService {
 
     public boolean getDecisionOfOtherPlayer(String pseudo) {
         return partie.getDecisionOfOtherPlayer(pseudo);
+    }
+
+
+    public List<Decision> getHistorique(String pseudo) throws GameNotInitializedException {
+        if (!isGameStarted()) {
+            throw new GameNotInitializedException("La partie n'est pas initialisée.");
+        }
+    
+        return partie.getHistorique(pseudo);
     }
     
 }
