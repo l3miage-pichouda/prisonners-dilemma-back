@@ -78,33 +78,33 @@ public class GameController {
     }
 
 
-    @PostMapping("/play")
-    public ResponseEntity<Map<String, String>> play(@RequestBody PseudoRequest request, @RequestParam String decision) throws GameNotInitializedException {
-        String pseudo = request.getPseudo();
-        Map<String, String> response = new HashMap<>();
+    // @PostMapping("/play")
+    // public ResponseEntity<Map<String, String>> play(@RequestBody PseudoRequest request, @RequestParam String decision) throws GameNotInitializedException {
+    //     String pseudo = request.getPseudo();
+    //     Map<String, String> response = new HashMap<>();
 
-        try {
-            boolean success = partiesService.soumettreDecision(pseudo, Decision.valueOf(decision));
+    //     try {
+    //         boolean success = partiesService.soumettreDecision(pseudo, Decision.valueOf(decision));
 
-            if (!success) {
-                return ResponseEntity.badRequest().body(Map.of("message", "Erreur lors de la soumission de la décision pour " + pseudo));
-            }
+    //         if (!success) {
+    //             return ResponseEntity.badRequest().body(Map.of("message", "Erreur lors de la soumission de la décision pour " + pseudo));
+    //         }
 
-            if (partiesService.peutJouerTour()) {
-                partiesService.jouerTour();
-                response.put("message", "Tour joué avec succès.");
-                return ResponseEntity.ok(response);
-            }
+    //         if (partiesService.peutJouerTour()) {
+    //             partiesService.jouerTour();
+    //             response.put("message", "Tour joué avec succès.");
+    //             return ResponseEntity.ok(response);
+    //         }
 
-            response.put("message", pseudo + " a joué " + decision + ". En attente de l'autre joueur.");
-            return ResponseEntity.ok(response);
+    //         response.put("message", pseudo + " a joué " + decision + ". En attente de l'autre joueur.");
+    //         return ResponseEntity.ok(response);
 
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(Map.of("message", "Erreur de décision: " + decision));
-        } catch (IllegalStateException e) {
-            return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
-        }
-    }
+    //     } catch (IllegalArgumentException e) {
+    //         return ResponseEntity.badRequest().body(Map.of("message", "Erreur de décision: " + decision));
+    //     } catch (IllegalStateException e) {
+    //         return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
+    //     }
+    // }
 
     @GetMapping("/player-count")
     public ResponseEntity<Map<String, Integer>> getPlayerCount() {
@@ -136,10 +136,9 @@ public class GameController {
     }
 
     @GetMapping("/get-decision")
-    public ResponseEntity<Boolean> getDecision(@RequestParam String pseudo) {
+    public ResponseEntity<Boolean> getDecisionOfOtherPlayerController(@RequestParam String pseudo) {
         try {
             Boolean otherPlayerDecision = partiesService.getDecisionOfOtherPlayer(pseudo);
-            System.out.println("GameController.getDecision()");
             return ResponseEntity.ok(otherPlayerDecision);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

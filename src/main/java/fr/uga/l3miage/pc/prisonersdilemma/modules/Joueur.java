@@ -8,8 +8,8 @@ import lombok.Setter;
 @Setter
 public class Joueur {
     
-    private Strategy strategy = null;
-    private Decision decision = null;
+    private Strategy strategy;
+    private Decision decision ;
     private String name = null;
     private Integer score = 0; 
     private boolean connected;  
