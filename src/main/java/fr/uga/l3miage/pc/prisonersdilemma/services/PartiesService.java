@@ -58,16 +58,6 @@ public class PartiesService {
         return partie.peutJouerTour();
     }
 
-    public void jouerTour() throws GameNotInitializedException {
-        if (partie == null) {
-            throw new GameNotInitializedException();
-        }
-        if (partie.peutJouerTour()) {
-            partie.jouerTour();
-        } else {
-            throw new IllegalStateException("Les décisions des deux joueurs ne sont pas encore prêtes ou la partie est terminée.");
-        }
-    }
     public int getNumberOfPlayers() {
         return partie.getNbJoueurs(); 
     }
