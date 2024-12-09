@@ -1,6 +1,5 @@
 package fr.uga.l3miage.pc.prisonersdilemma.controllers;
 
-import java.io.Console;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

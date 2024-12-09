@@ -6,11 +6,11 @@ public class StrategyFactory {
 
     public Strategy create(TypeStrategy typeStrategy) {
         switch (typeStrategy) {
-            case RANDOM:
+            case ALEATOIRE:
                 return new Aleatoire();
-            case COOPERATE:
+            case TOUJOURS_COOPERER:
                 return new ToujoursCooperer();
-            case BETRAY:
+            case TOUJOURS_TRAHIR:
                 return new ToujoursTrahir();
             default:
             return null;
