@@ -1,4 +1,4 @@
-package fr.uga.l3miage.pc.prisonersdilemma.StrategiesTest;
+package fr.uga.l3miage.pc.prisonersdilemma.strategies;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import fr.uga.l3miage.pc.prisonersdilemma.enums.Decision;
 import fr.uga.l3miage.pc.prisonersdilemma.enums.TypeStrategy;
-import fr.uga.l3miage.pc.prisonersdilemma.strategies.StrategyAdapter;
 
 class StrategyAdapterTest {
     private StrategyAdapter strategyAdapter;
